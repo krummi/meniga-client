@@ -1,0 +1,17 @@
+{
+  "name": "MenigaAPI",
+  "version": "0.5.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^2.10.1",
+    "co": "^4.6.0",
+    "lodash": "^3.10.1",
+    "request": "^2.64.0"
+  }
+}

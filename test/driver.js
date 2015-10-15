@@ -25,8 +25,7 @@ co(function* () {
         PeriodTo: '/Date(1444089600000)/'
       }
     });
-    console.log(_.pluck(transactions.Transactions, ['Amount']));
-    //console.log(_.pluck(transactions.Transactions, ['Amount', 'OriginalDate']));
+    console.log('trans:', transactions.Transactions[0]);
   } catch (err) {
     console.error('got err:', err);
   }

@@ -1,5 +1,5 @@
 # Meniga API
-> An un-official, "reverse engineered" Node API client for Meniga.
+> An unofficial Node API client for Meniga.
 
 ## What is this?
 

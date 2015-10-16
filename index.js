@@ -63,8 +63,12 @@ var endpoints = [
     identifier: 'getTransactionsPage',
     path: '/Api/Transactions/GetTransactionsPage',
     params: [
-      { name: 'PeriodFrom', type: 'datetime', description: 'lower bound timestamp' },
-      { name: 'PeriodTo', type: 'datetime', description: 'upper bound timestamp' },
+      { name: 'page', type: 'integer', description: 'the page number to fetch' },
+      { name: 'transactionsPerPage', type: 'integer', description: 'the number of transactions per page' },
+      { name: 'filter', type: 'object', description: 'the filters to apply', subProperties: [
+        { name: 'PeriodFrom', type: 'datetime', description: 'lower bound timestamp' },
+        { name: 'PeriodTo', type: 'datetime', description: 'upper bound timestamp' },
+      ] }
     ]
   }
 ];

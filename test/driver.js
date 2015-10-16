@@ -19,14 +19,21 @@ co(function* () {
   try {
     let menigaClient = new MenigaClient();
     let authed = yield menigaClient.auth(username, password);
-    console.log('successfully authed?', authed);
-    let transactions = yield menigaClient.getTransactionsPage({
-      filter: {
-        PeriodFrom: moment('2015-10-01'),
-        PeriodTo: moment('2015-11-01')
-      }
-    });
-    console.log('trans:', transactions.Transactions[0]);
+    let page = 0;
+    let transactions;
+    do {
+      transactions = yield menigaClient.getTransactionsPage({
+        filter: {
+          PeriodFrom: moment('2015-10-01'),
+          PeriodTo: moment('2015-11-01')
+        },
+        page: page
+      });
+      console.log(`found ${transactions.Transactions.length} transactions`);
+      let a = -_.sum(_.filter(_.pluck(transactions.Transactions, 'Amount'), amount => amount < 0));
+      console.log(`you've spent ${a} kr. in those transactions`);
+      page++;
+    } while (transactions.HasMorePages);
   } catch (err) {
     console.error('got err:', err);
   }

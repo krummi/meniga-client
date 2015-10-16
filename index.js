@@ -5,7 +5,7 @@ let request = bluebird.promisify(require('request'));
 request = request.defaults({ jar: true });
 let _ = require('lodash');
 
-let utils = require('./utils.js');
+let utils = require('./lib/utils.js');
 
 const RV_TOKEN_REGEX = new RegExp('value="([a-zA-Z0-9/+]+)"');
 const USER_AGENT = 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36';

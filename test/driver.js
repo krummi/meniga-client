@@ -5,7 +5,7 @@ let co = require('co');
 let _ = require('lodash');
 let moment = require('moment');
 
-let MenigaClient = require('../lib/meniga');
+let MenigaClient = require('../index');
 
 if (process.argv.length !== 4) {
   console.error('usage: node driver.js <meniga username> <meniga password>')

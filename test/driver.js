@@ -19,8 +19,11 @@ co(function* () {
   try {
     let menigaClient = new MenigaClient();
     let authed = yield menigaClient.auth(username, password);
+    let categories = yield menigaClient.getUserCategories();
+    let categoriesByIndex = _.indexBy(categories, 'Id');
     let page = 0;
     let transactions;
+    let allTransactions = [];
     do {
       transactions = yield menigaClient.getTransactionsPage({
         filter: {
@@ -29,11 +32,15 @@ co(function* () {
         },
         page: page
       });
-      console.log(`found ${transactions.Transactions.length} transactions`);
-      let a = -_.sum(_.filter(_.pluck(transactions.Transactions, 'Amount'), amount => amount < 0));
-      console.log(`you've spent ${a} kr. in those transactions`);
+      _.forEach(transactions.Transactions, function (transaction) {
+        if (_.has(categoriesByIndex, transaction.CategoryId)) {
+          transaction.Category = categoriesByIndex[transaction.CategoryId];
+        }
+        allTransactions.push(transaction);
+      });
       page++;
     } while (transactions.HasMorePages);
+    console.log(JSON.stringify(allTransactions));
   } catch (err) {
     console.error('got err:', err);
   }

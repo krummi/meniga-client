@@ -70,6 +70,10 @@ var endpoints = [
         { name: 'PeriodTo', type: 'datetime', description: 'upper bound timestamp' },
       ] }
     ]
+  }, {
+    identifier: 'getUserCategories',
+    path: '/Api/User/GetUserCategories',
+    params: []
   }
 ];
 

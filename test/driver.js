@@ -3,6 +3,7 @@
 let bluebird = require('bluebird');
 let co = require('co');
 let _ = require('lodash');
+let moment = require('moment');
 
 let MenigaClient = require('../lib/meniga');
 
@@ -21,8 +22,8 @@ co(function* () {
     console.log('successfully authed?', authed);
     let transactions = yield menigaClient.getTransactionsPage({
       filter: {
-        PeriodFrom: '/Date(1443657600000)/',
-        PeriodTo: '/Date(1444089600000)/'
+        PeriodFrom: moment('2015-10-01'),
+        PeriodTo: moment('2015-11-01')
       }
     });
     console.log('trans:', transactions.Transactions[0]);

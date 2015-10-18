@@ -12,7 +12,7 @@ let moment = require('moment');
 let MenigaClient = require('../index');
 
 if (process.argv.length !== 4) {
-  console.error('usage: node driver.js <meniga username> <meniga password>')
+  console.error('usage: node transactions.js <meniga username> <meniga password>')
   process.exit(-1);
 }
 

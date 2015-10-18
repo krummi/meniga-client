@@ -73,7 +73,45 @@ var endpoints = [
   }, {
     identifier: 'getUserCategories',
     path: '/Api/User/GetUserCategories',
+    description: 'Fetches data on all public categories and the ones created by the currently logged in user.'
     params: []
+  }, {
+    identifier: 'getTrendsReport',
+    path: '/Api/Planning/GetTrendsReport',
+    description: 'An analytics endpoint allowing you to analyze your expenses by categories and timespans',
+    params: [
+      { name: 'filter', type: 'object', description: 'the filters to apply', subProperties: [
+        { name: 'View', type: 'integer', defaults: 1, description: '1 = sum over all months, 2 = group by month' },
+        { name: 'Type', type: 'integer', defaults: 1, description: '1 = im not sure, just use that' },
+        { name: 'Tags', type: 'array[string]', defaults: null, description: 'the tags to analyze, null to ignore.'},
+        { name: 'Period', type: 'string', defaults: '0', description: '0=this month, 1=last month, 3=last 3 months, 6=last 6 months, 12=last 12 months, -1=this year, -2=last year'},
+        { name: 'PeriodFrom', type: 'datetime', defaults: null, description: 'lower bound timestamp, overrides "Period".' }
+        { name: 'PeriodTo', type: 'datetime', defaults: null, description: 'upper bound timestamp, overrides "Period".' },
+        { name: 'Merchants', type: 'string', defaults: null, description: 'im not sure, null is default.' },
+        { name: 'Group': type: 'integer', defaults: 1, description: 'im not sure' },
+        { name: 'CategoryIds', type: 'array[integer]', description: 'IDs of the categories to analyze' },
+        { name: 'AccountIdentifiers', type: '?', defaults: null, description: '?' },
+        { name: 'AccountIds', type: '?', defaults: null, description: '?' },
+        { name: 'ComparisonPeriod', type: '?', defaults: null, description: '?' },
+        { name: 'Options', type: 'object', description: 'additional options to apply', subProperties: [
+          { name: 'AccumulateCategoryExpenses', type: 'boolean', defaults: false, description: '?' },
+          { name: 'DateFormat', type: '?', defaults: null, description: '?' },
+          { name: 'DisableSliceGrouping', type: '?', defaults: false, description: '?' },
+          { name: 'ExcludeNonMappedMerchants': type: '?', defaults: false, description: '?' },
+          { name: 'FutureMonths', type: 'integer', description: '?' },
+          { name: 'GetAverage', type: 'boolean', defaults: false, description: '?' },
+          { name: 'GetFuture', type: 'boolean', description: '?' },
+          { name: 'IncludeSavingsInNetIncome', type: 'boolean', defaults: true, description: '?' },
+          { name: 'IsParent', type: 'boolean', defaults: true, description: '?' },
+          { name: 'MaxSlicesInPie', type: 'integer', defaults: 10, description: '?' },
+          { name: 'MaxTopMerchants', type: 'integer', defaults: 10, description: '?' },
+          { name: 'MinPieSliceValue', type: 'integer', defaults: 1, description: '?' },
+          { name: 'MinSlicesInPie', type: 'integer', defaults: 5, description: '?' },
+          { name: 'SkipInvertedCategories', type: 'boolean', defaults: false, description: '?' }
+          { name: 'UseAndSearchForTags', type: 'boolean', defaults: false, description: '?' }
+        ] }
+      ]
+    ]
   }
 ];
 

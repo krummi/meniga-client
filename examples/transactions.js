@@ -1,5 +1,9 @@
 'use strict';
 
+// This example fetches all transactions done during a given interval of days, attaching
+// the correct category to every transaction. It then ends by printing the transaction + category
+// data to stdout as a JSON array.
+
 let bluebird = require('bluebird');
 let co = require('co');
 let _ = require('lodash');

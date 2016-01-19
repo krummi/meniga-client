@@ -11,13 +11,11 @@ let moment = require('moment');
 
 let MenigaClient = require('../index');
 
-if (process.argv.length !== 4) {
-  console.error('usage: node transactions.js <meniga username> <meniga password>')
-  process.exit(-1);
+let username = process.env.MENIGA_USERNAME;
+let password = process.env.MENIGA_PASSWORD;
+if (!username || !password) {
+  console.error('You need to configure both env vars: MENIGA_USERNAME and MENIGA_PASSWORD');
 }
-
-let username = process.argv[2];
-let password = process.argv[3];
 
 co(function* () {
   try {
@@ -31,8 +29,8 @@ co(function* () {
     do {
       transactions = yield menigaClient.getTransactionsPage({
         filter: {
-          PeriodFrom: moment('2015-10-01'),
-          PeriodTo: moment('2015-11-01')
+          PeriodFrom: moment('2016-01-01'),
+          PeriodTo: moment('2016-01-31')
         },
         page: page
       });

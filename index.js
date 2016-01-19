@@ -54,6 +54,16 @@ MenigaClient.prototype.auth = function* (username, password) {
 
 var endpoints = [
   {
+    identifier: 'createUserCategory',
+    path: '/Api/User/CreateUserCategory',
+    params: [
+      { name: 'categoryType', type: 'string', description: 'expenses ("0")' },
+      { name: 'isFixedExpenses', type: 'boolean', description: 'whether this is fixed or variable expenses' },
+      { name: 'name', type: 'string', description: 'the name of the new category' },
+      { name: 'parentId', type: 'string', description: 'the parent category of the new category' }
+    ]
+  },
+  {
     identifier: 'getBudgetEquationWidget',
     path: '/Api/Widgets/GetBudgetEquationWidget',
     params: [

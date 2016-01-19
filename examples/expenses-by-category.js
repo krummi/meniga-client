@@ -10,13 +10,11 @@ let moment = require('moment');
 
 let MenigaClient = require('../index');
 
-if (process.argv.length !== 4) {
-  console.error('usage: node expenses-by-category.js <meniga username> <meniga password>')
-  process.exit(-1);
+let username = process.env.MENIGA_USERNAME;
+let password = process.env.MENIGA_PASSWORD;
+if (!username || !password) {
+  console.error('You need to configure both env vars: MENIGA_USERNAME and MENIGA_PASSWORD');
 }
-
-let username = process.argv[2];
-let password = process.argv[3];
 
 function createOptions(categories) {
   return {
@@ -41,9 +39,9 @@ function createOptions(categories) {
         UseAndSearchForTags: false,
         DisableSliceGrouping: false
       },
-      Period: '0', // this month!
-      PeriodFrom: null,
-      PeriodTo: null,
+      Period: '0', // '1', // '0' = this month, '1' = last month :O
+      PeriodFrom: null, // moment('2015-01-01 00:00:00'),
+      PeriodTo: null, // moment('2016-01-01 00:00:00'),
       ComparisonPeriod: null,
       CategoryIds: categories,
       AccountIds: null,
@@ -58,20 +56,52 @@ function rpad(s, n) {
   return s + ' '.repeat(Math.max(n - s.length, 0));
 }
 
+function isFixed(name, categoriesByName) {
+  if (_.has(categoriesByName, name)) {
+    return (name === 'Áskriftir og miðlun' || categoriesByName[name].IsFixedExpenses);
+  } else {
+    return false;
+  }
+}
+
+function print(obj) {
+  _.forEach(obj.transactions, data => {
+    console.log(`  ${rpad(data[0], 40)}${-data[1]} kr.`);
+  });
+  console.log(`  ${rpad('Total:', 40)}${-obj.total} kr.`);
+}
+
 co(function* () {
   try {
     let menigaClient = new MenigaClient();
     let authed = yield menigaClient.auth(username, password);
     let categories = yield menigaClient.getUserCategories();
     let allCategoryIds = _.pluck(categories, 'Id');
+    let categoriesByName = _.indexBy(categories, 'Name'); // we don't get the category id?
     let report = yield menigaClient.getTrendsReport(createOptions(allCategoryIds));
-    let results = _.map(report.Series.Rows, function (row) {
+
+    let fixed    = { total: 0, transactions: [] };
+    let variable = { total: 0, transactions: [] };
+    _.forEach(report.Series.Rows, row => {
       let data = _.pluck(row.Columns, 'Value');
-      // console.log(`${rpad(data[0], 40)}${-data[1]} kr.`);
-      return { name: data[0], amount: -data[1] };
+      if (isFixed(data[0], categoriesByName)) {
+        fixed.transactions.push(data);
+        fixed.total += data[1];
+      } else {
+        variable.transactions.push(data);
+        variable.total += data[1];
+      }
     });
-    console.log(JSON.stringify(results));
+
+    // print stuff:
+    console.log('Fixed:');
+    print(fixed);
+
+    console.log('\nVariable:');
+    print(variable);
+
   } catch (err) {
     console.error('got err:', err);
+    console.error(err.stack);
   }
 });

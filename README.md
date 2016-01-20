@@ -20,8 +20,8 @@ var meniga = new MenigaClient();
 meniga.auth('<username>', '<password>')
 .then(function () {
   return meniga.getTransactionsPage({
-    PeriodFrom: '/Date(1443657600000)/',
-    PeriodTo: '/Date(1444089600000)/'
+    PeriodFrom: moment('2016-01-01'),
+    PeriodTo: moment('2016-02-01')
   });
 })
 ```
